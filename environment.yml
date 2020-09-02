@@ -1,0 +1,10 @@
+name: GW190521Sky
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - seaborn
+  - astropy
+  - h5py
+  - python=3
+  - jupyterlab
