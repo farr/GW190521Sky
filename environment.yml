@@ -8,3 +8,5 @@ dependencies:
   - h5py
   - python=3
   - jupyterlab
+  - tqdm
+  - ligo.skymap
