@@ -10,3 +10,7 @@ dependencies:
   - jupyterlab
   - tqdm
   - ligo.skymap
+  - ipywidgets
+  - nodejs
+  - ipympl
+prefix: /Users/wfarr/anaconda3/envs/GW190521Sky
