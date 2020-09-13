@@ -13,4 +13,7 @@ dependencies:
   - ipywidgets
   - nodejs
   - ipympl
+  - pip
+  - pip:
+    - daft
 prefix: /Users/wfarr/anaconda3/envs/GW190521Sky
