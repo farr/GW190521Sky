@@ -4,6 +4,21 @@ import theano
 import theano.tensor as tt
 
 def E(z, Om, w):
+    r"""The usual :math:`E` factor that appears in the comoving distance integrand.
+
+    Here we specialize to flat cosmologies with dark energy and matter, so
+    :math:`E` is defined by
+
+    .. math::
+
+      E \equiv \sqrt{\Omega_m \left( 1 + z \right)^3 + \left( 1 - \Omega_m \right) \left( 1 + z \right)^{3(1+w)}}
+
+    :param z: The redshift(s) at which to evaluate :math:`E`.
+
+    :param Om: The dimensionless matter density (relative to the critical density).
+
+    :param w: The dark energy equation of state parameter.
+    """
     z = tt.as_tensor_variable(z)
     Om = tt.as_tensor_variable(Om)
     w = tt.as_tensor_variable(w)
@@ -13,6 +28,9 @@ def E(z, Om, w):
     return tt.sqrt(Om*opz*opz*opz + (1-Om)*opz**(3*(1+w)))
 
 def tt_trapz(ys, xs):
+    r"""Theano implementation of :func:`np.trapz`.
+
+    """
     ys = tt.as_tensor_variable(ys)
     xs = tt.as_tensor_variable(xs)
 
@@ -20,6 +38,13 @@ def tt_trapz(ys, xs):
     return tt.sum(0.5*dxs*(ys[1:]+ys[:-1]))
 
 def tt_cumtrapz(ys, xs):
+    r"""Theano implementation of :func:`scipy.integration.cumtrapz`.
+
+    Compared to the `scipy` function, we fix `initial=0`, so the returned array
+    has the *same* dimensions as `ys` and always contains `0` as its first
+    element.
+
+    """
     ys = tt.as_tensor_variable(ys)
     xs = tt.as_tensor_variable(xs)
 
@@ -29,6 +54,23 @@ def tt_cumtrapz(ys, xs):
     return result
 
 def dCs(zs, dH, Om, w):
+    r"""Compute the comoving distances at the given redshifts in a cosmology.
+
+    The array of `zs` provided must have spacing sufficient to obtain an
+    approximation to the integral in the comoving distance definition via the
+    trapezoid rule.
+
+    :param zs: Redshifts.  See note above about spacing.
+
+    :param dH: The Hubble distance, :math:`d_H = c/H_0`.
+
+    :param Om: Dimensionless matter density.
+
+    :param w: Dark enery EOS parameter.
+
+    :return: Array of comoving distances at the given redshifts (units
+      correspond to `dH`).
+    """
     zs = tt.as_tensor_variable(zs)
     dH = tt.as_tensor_variable(dH)
     Om = tt.as_tensor_variable(Om)
@@ -37,9 +79,25 @@ def dCs(zs, dH, Om, w):
     return dH*tt_cumtrapz(1.0/E(zs, Om, w), zs)
 
 def dLs(zs, dCs):
+    """Convenience function to convert redshifts and comoving distances to
+    luminosity distances.
+    """
     return (1+zs)*dCs
 
 def dVdz(zs, dCs, dH, Om, w):
+    r"""Returns differential comoving volumes at the indicated redshifts/comoving
+    distances.
+
+    :param zs: Redshifts.
+
+    :param dCs: Comoving distances.
+
+    :param dH: Hubble distance, :math:`d_H \equiv c/H_0`.
+
+    :param Om: Dimensionless matter density.
+
+    :param w: Dark energy equation of state parameter.
+    """
     return 4.0*np.pi*dCs*dCs*dCs*dH/E(zs, Om, w)
 
 def tt_interp(x, xs, ys):

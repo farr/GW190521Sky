@@ -1,4 +1,5 @@
 .ipynb_checkpoints
 GW190521_posterior_samples.h5
+posterior_samples_fixedsky.dat
 Figure1.csv
 __pycache__
