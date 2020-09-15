@@ -16,4 +16,5 @@ dependencies:
   - pip
   - emcee
   - arviz
+  - pymc3
 prefix: /Users/wfarr/anaconda3/envs/GW190521Sky
