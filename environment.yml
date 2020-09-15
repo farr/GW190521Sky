@@ -14,7 +14,10 @@ dependencies:
   - nodejs
   - ipympl
   - pip
+  - pip:
+    - daft
   - emcee
   - arviz
   - pymc3
+  - mkl-service
 prefix: /Users/wfarr/anaconda3/envs/GW190521Sky
