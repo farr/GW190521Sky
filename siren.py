@@ -98,7 +98,7 @@ def dVdz(zs, dCs, dH, Om, w):
 
     :param w: Dark energy equation of state parameter.
     """
-    return 4.0*np.pi*dCs*dCs*dCs*dH/E(zs, Om, w)
+    return 4.0*np.pi*dCs*dCs*dH/E(zs, Om, w)
 
 def tt_interp(x, xs, ys):
     x = tt.as_tensor_variable(x)
